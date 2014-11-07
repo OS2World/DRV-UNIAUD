@@ -1,0 +1,55 @@
+NMAKEOPTS=-f makefile.os2
+
+!if "$(DEBUG)" == "1"
+NMAKEOPTS += DEBUG=1
+!endif
+
+!if "$(KEE)" == "0"
+NMAKEOPTS += KEE=0
+KEE=0
+!else
+NMAKEOPTS += KEE=1
+KEE=1
+!endif
+
+!if "$(DEBUG)" == "1"
+!Message BUILDING DEBUG VERSION
+!else
+!Message BUILDING RELEASE VERSION
+!endif
+
+
+#===================================================================
+#
+#   Specific dependencies
+#
+#===================================================================
+all: subdirs
+
+subdirs: .SYMBOLIC
+    @echo BUILDING alsa
+    @cd alsa
+    @wmake $(NMAKEOPTS)
+    @cd ..
+    @echo BUILDING lib32
+    @cd lib32
+    @wmake $(NMAKEOPTS)
+    @cd ..
+    @echo BUILDING drv32
+    @cd drv32
+    @wmake $(NMAKEOPTS)
+    @cd ..
+
+clean:
+    @echo BUILDING alsa
+    @cd alsa
+    @wmake $(NMAKEOPTS) clean
+    @cd ..
+    @echo BUILDING lib32
+    @cd lib32
+    @wmake $(NMAKEOPTS) clean
+    @cd ..
+    @echo BUILDING drv32
+    @cd drv32
+    @wmake $(NMAKEOPTS) clean
+    @cd ..
